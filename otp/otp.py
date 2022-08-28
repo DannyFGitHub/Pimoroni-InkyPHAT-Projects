@@ -5,6 +5,7 @@ from inky.auto import auto
 from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 from random import randint
+import datetime
 
 inkyphat = auto()
 img = Image.new("P", (inkyphat.WIDTH, inkyphat.HEIGHT))
@@ -45,10 +46,12 @@ for line in lines:
     #print(totp_uri_str)
     totp = pyotp.parse_uri(totp_uri_str)
     token = totp.now()
+    time_remaining = int(totp.interval - datetime.datetime.now().timestamp() % totp.interval)
     tokens.append({ 
       'issuer': issuer,
       'email': email,
-      'token': token
+      'token': token,
+      'time_rem': time_remaining
     })
 
 last_line = 0
@@ -58,7 +61,7 @@ for index, token in enumerate(tokens):
     last_line = last_line + 1
     draw_text((0,(last_line * 10)), str(token["issuer"]), colour=inkyphat.BLACK)
     last_line = last_line + 1
-    draw_text((0,(last_line * 10)), str(token["token"]), colour=inkyphat.BLACK)
+    draw_text((0,(last_line * 10)), str(token["token"]) + "  " + str(token["time_rem"]) + "secs", colour=inkyphat.BLACK)
     last_line = last_line + 1
   except IndexError:
     pass
