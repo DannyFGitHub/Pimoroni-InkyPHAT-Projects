@@ -1,0 +1,2 @@
+# The format is email:::secret:::issuer - to know what to enter here, look at the totp uri when decoding qr code
+Fakecompany:myemail@mydomain.com:::6hlk uy4j hljh fjif:::Fakecompany
